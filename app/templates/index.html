@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}Home{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <p>Welcome to the homepage!</p>
+
+    <form method="POST">
+        <input name="search_text">
+        <input type="submit" value="Search">
+    </form>
+{% endblock %}

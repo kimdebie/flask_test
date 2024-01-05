@@ -1,2 +1,2 @@
-def multiply_by_two(a: int) -> int:
-    return a * 2
+def get_results(text_input: str) -> list:
+    return [f"{i} search text {text_input}" for i in range(100)]
