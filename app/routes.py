@@ -15,7 +15,7 @@ def search():
     search_text = request.form['search_text']
     session['search_text'] = search_text
     session['results'] = get_results(search_text)
-    return redirect(url_for("show_result_page", post_id=0))
+    return redirect(url_for("show_result_page"))
 
 
 @app.route("/about")
@@ -29,7 +29,7 @@ def show_result_page(results_per_page=5):
     results = session.get('results', None)
 
     if results is None:
-        return redirect(url_for("index", post_id=0))
+        return redirect(url_for("index"))
 
     # set up pagination
     page = request.args.get(get_page_parameter(), type=int, default=1)
