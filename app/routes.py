@@ -1,10 +1,8 @@
-from flask import render_template, request, url_for, redirect
+from flask import render_template, request, url_for, redirect, session
 from flask_paginate import get_page_parameter, Pagination
 
 from app import app
 from app.calculations import get_results
-
-cache = {}
 
 
 @app.route("/index")
@@ -14,9 +12,10 @@ def index():
 
 @app.route('/index', methods=['POST'])
 def search():
-    cache['search_text'] = request.form['search_text']
-    cache['results'] = get_results(cache['search_text'])
-    return redirect(url_for("show_result_page", post_id=0))
+    search_text = request.form['search_text']
+    session['search_text'] = search_text
+    session['results'] = get_results(search_text)
+    return redirect(url_for("show_result_page"))
 
 
 @app.route("/about")
@@ -26,12 +25,11 @@ def about():
 
 @app.route('/result')
 def show_result_page(results_per_page=5):
+    search_text = session.get('search_text', None)
+    results = session.get('results', None)
 
-    search_text = cache.get('search_text', 'No search text')
-
-    if cache.get('search_text', None) is None:
-        return "<p>No results</p>"
-    results = cache['results']
+    if results is None:
+        return redirect(url_for("index"))
 
     # set up pagination
     page = request.args.get(get_page_parameter(), type=int, default=1)
